@@ -1,0 +1,120 @@
+FROM debian:stable-slim
+
+# TODO: parametrize
+EXPOSE 9092
+
+ARG ENV
+ARG UID
+ARG GID
+ARG PRODUCT
+ARG ORG_DIR
+ARG BASE_DIR
+
+
+ENV BASE_DIR=$BASE_DIR
+ENV ORG_DIR=$ORG_DIR
+ENV PRODUCT=$PRODUCT
+ENV APPUSR=appusr
+ENV APPGRP=appgrp
+ENV MODULE="status-monitor-ui"
+ENV PS1="`date \"+%F %T\"` \u@\h  \w \n\n  "
+
+ENV PRODUCT_DIR="$BASE_DIR/$ORG_DIR/$PRODUCT"
+ENV HOME_PRODUCT_DIR="/home/$APPUSR$PRODUCT_DIR"
+ENV EDITOR="vim"
+ENV ENV=$ENV
+ENV TERM="xterm-256color"
+
+ENV KAFKA_VERSION=2.8.1
+ENV KAFKA_SCALA_VERSION=2.13
+ENV KAFKA_HOME=/opt/kafka
+
+VOLUME $PRODUCT_DIR
+
+# START ::: install bins
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    bash binutils vim perl jq wget \
+    curl zip unzip  \
+    sudo net-tools \
+    gcc git openjdk-11-jdk-headless \
+    make python3\
+    python3-pip\
+    util-linux
+
+# STOP ::: install bins
+
+# RUN pip install wheel
+
+# START ::: Enable host to container edit of proj code on ubuntu and mac.
+RUN test -z $(getent group $GID | cut -d: -f1) || \
+        groupmod -g $((GID+1000)) $(getent group $GID | cut -d: -f1)
+
+RUN set -x ; groupadd -g "$GID" "$APPGRP" && \
+  useradd \
+  --gid "$GID" \
+  --non-unique \
+  --shell "/bin/bash" \
+  --home-dir "/home/$APPUSR" \
+  --uid "$UID" \
+  --groups "$APPGRP" "$APPUSR" && exit 0 ; exit 
+
+
+RUN mkdir -p "/home/$APPUSR" && chown "$APPUSR":"$APPGRP" "/home/$APPUSR"
+
+RUN echo "This is --> $HOME_PRODUCT_DIR"
+
+
+RUN echo "$APPUSR ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+RUN echo "export PS1=\"$PS1\"" >> "/home/$APPUSR"/.bashrc && \
+  chown -R $APPUSR:$APPGRP "/home/$APPUSR" && \
+  chmod -R 0775 "/home/$APPUSR"
+
+
+# RUN echo "This is --> $HOME_PRODUCT_DIR"
+
+USER $APPUSR
+SHELL ["/bin/bash", "-c"]
+ENV USER=$APPUSR
+ENV GROUP=$APPGRP
+
+# STOP  ::: enable host to container edit of proj code on ubuntu and mac.
+COPY --chown=$APPUSR:$APPGRP . ${HOME_PRODUCT_DIR}
+COPY --chown=$APPUSR:$APPGRP ./src/bash/run/run.sh ${HOME_PRODUCT_DIR}/src/bash/run/run.sh
+RUN echo "------------------------------------- $HOME_PRODUCT_DIR"
+RUN echo "------------------------------------- $MODULE"
+
+# ADD --chown=$APPUSR:$APPGRP "." "${HOME_PRODUCT_DIR}"
+
+
+
+RUN sudo chmod 0775 ${HOME_PRODUCT_DIR}/src/bash/run/docker-init-${MODULE}.sh
+
+
+WORKDIR $HOME_PRODUCT_DIR
+RUN ln -sfn src/bash/run/run.sh run
+
+# stop ::: adding OS APPUSER and APPGROUP
+
+
+
+USER $APPUSR
+WORKDIR $PRODUCT_DIR
+
+# start ::: deploy nodejs
+RUN bash ${HOME_PRODUCT_DIR}/run -a do_debian_check_install_nodejs
+# stop  ::: deploy nodejs
+
+# start ::: the global npm modules
+RUN bash ${HOME_PRODUCT_DIR}/run -a do_debian_check_install_global_npm_modules
+# stop  ::: the global npm modules
+
+# start ::: install npm modules
+# RUN export TGT_DIR=${HOME_PRODUCT_DIR}/src/nodejs/${MODULE} && \
+#   bash ${HOME_PRODUCT_DIR}/run -a do_check_install_npm_modules
+# stop  ::: install npm modules
+
+# but use the proj root dir to write the code on and interact
+WORKDIR $PRODUCT_DIR
+
+CMD exec /bin/bash -c "${HOME_PRODUCT_DIR}/src/bash/run/docker-init-${MODULE}.sh"

@@ -1,0 +1,29 @@
+FROM python:3.10.11-slim-buster
+
+# START ::: add-os-user
+RUN if getent group $GID; then groupmod -g $((GID+2000)) $(getent group $GID | cut -d: -f1); fi
+
+# create a APPGRP and APPUSR
+# START ::: add-os-user
+RUN set -x ; groupadd -g "$GID" "$APPGRP" && \
+  useradd \
+  --gid "$GID" \
+  --non-unique \
+  --shell "$DOCKER_SHELL" \
+  --home-dir "/home/appusr" \
+  --uid "$UID" \
+  --groups "$APPGRP" "$APPUSR" && exit 0 ; exit 1
+
+# create home directory and change its ownership to APPUSR:APPGRP
+RUN mkdir -p "/home/$APPUSR" && chown "$APPUSR":"$APPGRP" "/home/$APPUSR"
+
+
+RUN echo "$APPUSR ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+RUN echo "export PS1=\"$PS1\"" >> $DOCKER_HOME/.bashrc && \
+  chown -R $APPUSR:$APPGRP $DOCKER_HOME && \
+  chmod -R 0775 $DOCKER_HOME
+
+
+USER $APPUSR
+
+# STOP  ::: add-os-user

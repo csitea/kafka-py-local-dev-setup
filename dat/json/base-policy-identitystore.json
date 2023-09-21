@@ -1,0 +1,37 @@
+
+    {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+        "Effect": "Deny",
+        "Action": "*",
+        "Resource": "*"
+        },
+        {
+        "Effect": "Allow",
+        "Action": ["identitystore:CreateGroup",
+            "identitystore:CreateGroupMembership",
+            "identitystore:CreateUser",
+            "identitystore:DeleteGroup",
+            "identitystore:DeleteGroupMembership",
+            "identitystore:DeleteUser",
+            "identitystore:DescribeGroup",
+            "identitystore:DescribeGroupMembership",
+            "identitystore:DescribeUser",
+            "identitystore:GetGroupId",
+            "identitystore:GetGroupMembershipId",
+            "identitystore:GetUserId",
+            "identitystore:IsMemberInGroups",
+            "identitystore:ListGroupMemberships",
+            "identitystore:ListGroupMembershipsForMember",
+            "identitystore:ListGroups",
+            "identitystore:ListUsers",
+            "identitystore:UpdateGroup",
+            "identitystore:UpdateUser"
+            
+        ],
+        "Resource": "*"
+        }
+    ]
+    }
+    

@@ -1,0 +1,36 @@
+aws-iam-roles:
+  - title: OrgAdmin
+    name: Organization Administrator
+    code: OrgAdmin
+
+  - title: BillingAdmin
+    name: Billing Administrator
+    code: BillingAdmin
+
+  - title: ResourceAdmin
+    name: Resource Administrator
+    code: ResourceAdmin
+
+  - title: ReadOnlyAdmin
+    name: Read-Only Administrator
+    code: ReadOnlyAdmin
+
+  - title: IAMCICDSystem
+    name: IAM CI/CD System
+    code: IAMCICDSystem
+
+  - title: ResourceCICDSystem
+    name: Resource CI/CD System
+    code: ResourceCICDSystem
+
+  - title: DWHEngineer
+    name: Data Warehouse Engineer
+    code: DWHEngineer
+
+  - title: DWHAnalyst
+    name: Data Warehouse Analyst
+    code: DWHAnalyst
+
+  - title: DWHUser
+    name: Data Warehouse User
+    code: DWHUser

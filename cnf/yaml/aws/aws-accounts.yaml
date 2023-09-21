@@ -1,0 +1,32 @@
+aws-accounts:
+  - title: Root
+    name: Root Account
+    code: rtr
+
+  - title: Infra
+    name: Infrastructure Account
+    code: inf
+
+  - title: Ops
+    name: Operations Account
+    code: ops
+
+  - title: Dev
+    name: Development Account
+    code: dev
+
+  - title: Stage
+    name: Staging Account
+    code: stg
+
+  - title: Prod
+    name: Production Account
+    code: prd
+
+  - title: Audit
+    name: Audit Account
+    code: adt
+
+  - title: Log
+    name: Logging Account
+    code: log

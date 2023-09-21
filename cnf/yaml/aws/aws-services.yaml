@@ -1,0 +1,55 @@
+aws-services:
+  - title: ControlTower
+    name: AWS Control Tower
+    code: controltower
+    link: https://docs.aws.amazon.com/controltower/latest/userguide/what-is-control-tower.html
+
+  - title: ECR
+    name: Amazon Elastic Container Registry (ECR)
+    code: ecr
+    link: https://aws.amazon.com/ecr/
+
+  - title: Elastic Computing Services
+    name: Elastic Computing Service
+    code: ec2
+    link: https://aws.amazon.com/pm/ec2/
+
+  - title: Elastic Container Service ( Fargate )
+    name: Elastic Container Service
+    code: ecs
+    link: https://aws.amazon.com/ecs/
+
+  - title: IAM
+    name: AWS Identity and Access Management (IAM)
+    code: iam
+    link: https://aws.amazon.com/iam/
+
+  - title: Identity Store
+    name: The Identity Store service used by AWS IAM Identity Center (successor to AWS Single Sign-On)
+    code: identitystore
+    link: https://docs.aws.amazon.com/singlesignon/latest/IdentityStoreAPIReference/welcome.html
+
+  - title: Networking
+    name: networkmanager
+    code: networkmanager
+    link: https://docs.aws.amazon.com/managedservices/latest/userguide/networking-manager.html
+
+  - title: RDS
+    name: Amazon Relational Database Service (RDS)
+    code: rds
+    link: https://aws.amazon.com/rds/
+
+  - title: S3
+    name: Amazon Simple Storage Service (S3)
+    code: s3
+    link: https://aws.amazon.com/s3/
+
+  - title: Secrets Manager
+    name: Secrets Manager
+    code: secretsmanager
+    link: https://aws.amazon.com/secrets-manager/
+
+  - title: Security Hub
+    name: AWS Security Hub
+    code: securityhub
+    link: https://aws.amazon.com/security-hub/

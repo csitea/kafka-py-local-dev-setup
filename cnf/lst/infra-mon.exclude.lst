@@ -1,0 +1,10 @@
+.git
+.log
+README.md
+doc/md
+node_modules
+.venv
+.terraform.lock.hcl
+/.terraform/
+bin/
+__pycache__

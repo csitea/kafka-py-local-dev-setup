@@ -1,0 +1,2 @@
+ [INFO  ] 2023-08-22 17:35:50 EEST [infra-core][@vasil-modern14] [44629] START ::: running action :: do_route53_state_backup 
+ [FATAL ] 2023-08-22 17:35:56 EEST [infra-core][@vasil-modern14] [44629] failed to run action: do_route53_state_backup !!! 

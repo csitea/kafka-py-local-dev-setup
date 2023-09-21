@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kafka</title>
+</head>
+<body>
+<h1>This is a kafka example</h1>
+<form action="{% url 'index-page' %}" method="post" >
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+<div>
+    {% for message in consumer %}
+    <p>{{ message.topic }} --- {{ message.value }}</p>
+    {% endfor %}
+</div>
+
+</body>
+</html>

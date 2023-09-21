@@ -1,0 +1,8 @@
+FROM python:3.10.11-slim-buster
+
+# START ::: install alpine OS utils
+
+RUN apt-get update && apt-get install -y --no-install-recommends  \
+  perl jq vim wget curl sudo zip unzip make bsdmainutils tzdata
+# STOP  ::: install alpine OS utils
+

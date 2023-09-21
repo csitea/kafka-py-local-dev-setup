@@ -1,0 +1,4 @@
+ [INFO  ] 2023-09-21 10:59:35 EEST [kafka-server][@radi-HP-250] [20111] START ::: running action :: do_print_usage 
+ [INFO  ] 2023-09-21 11:00:45 EEST [kafka-server][@radi-HP-250] [21952] START ::: running action :: do_test_kafka_server_django 
+ [FATAL ] 2023-09-21 11:00:50 EEST [kafka-server][@radi-HP-250] [21952] failed to run action: do_test_kafka_server_django !!! 
+ [INFO  ] 2023-09-21 11:04:43 EEST [kafka-server][@radi-HP-250] [23932] START ::: running action :: do_test_kafka_server_django 

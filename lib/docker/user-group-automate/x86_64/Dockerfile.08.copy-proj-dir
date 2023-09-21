@@ -1,0 +1,13 @@
+FROM python:3.10.11-slim-buster
+
+# START ::: copy-proj-dir
+
+COPY --chown=$APPUSR:$APPGRP . ${HOME_PRODUCT_DIR}
+COPY --chown=$APPUSR:$APPGRP ./src/bash/run/run.sh ${HOME_PRODUCT_DIR}/src/bash/run/run.sh
+
+# Create the 'run' symlink
+WORKDIR $HOME_PRODUCT_DIR
+RUN ln -sfn src/bash/run/run.sh run
+
+
+# STOP  ::: copy-proj-dir

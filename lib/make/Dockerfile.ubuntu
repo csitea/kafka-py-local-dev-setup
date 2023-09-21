@@ -1,0 +1,74 @@
+FROM ubuntu:20.04
+
+ARG ENV
+ARG UID
+ARG GID
+ARG PRODUCT
+ARG TGT_ORG
+
+ENV ENV=$ENV
+ENV PRODUCT=$PRODUCT
+ENV TGT_ORG=$TGT_ORG
+ENV APPUSR=appusr
+ENV APPGRP=appgrp
+ENV TERM="xterm-256color"
+ENV TZ="Etc/UTC"
+ENV PS1="`date \"+%F %T\"` \u@\h  \w \n\n  "
+
+# This is the dir to use to edit the source code.
+ENV PRODUCT_DIR="/opt/$PRODUCT"
+
+# Workaround the interactivity questions on ubuntu.
+RUN echo \n\
+XKBMODEL="pc105" \n\
+XKBLAYOUT="se" \n\
+XKBVARIANT="" \n\
+XKBOPTIONS="" \n\
+BACKSPACE="guess" \n\
+ > /etc/default/keyboard
+
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN export DEBIAN_FRONTEND=noninteractive && apt-get install -y \
+        perl jq vim wget curl sudo unzip make bsdmainutils tzdata
+
+# Install Python 3.8.
+RUN export DEBIAN_FRONTEND=noninteractive && apt-get install -y \
+        python3.8 python3.8-dev python3.8-venv
+RUN export DEBIAN_FRONTEND=noninteractive && apt-get install -y \
+        python3-pip
+RUN ln -sfn /usr/bin/python3.8 /usr/bin/python && \
+    ln -sfn /usr/bin/python3.8 /usr/bin/python3
+
+# Install node.js
+RUN export DEBIAN_FRONTEND=noninteractive && \
+      curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash - && \
+      apt-get install -y nodejs
+
+# Enable host to container edit of proj code on ubuntu and mac.
+RUN test -z $(getent group $GID | cut -d: -f1) || \
+        groupmod -g $((GID+1000)) $(getent group $GID | cut -d: -f1)
+
+RUN addgroup --gid $GID $APPGRP
+RUN adduser \
+        --gid $GID \
+        --shell "/bin/bash" \
+        --home "/home/$APPUSR" \
+        --uid $UID \
+        $APPUSR && exit 0
+
+RUN echo "$APPUSR:6923#HkgS" | chpasswd
+
+RUN echo "$APPUSR ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+RUN echo "export PS1=\"$PS1\"" >> /home/$APPUSR/.bashrc
+
+USER $APPUSR
+
+ADD --chown=$APPUSR:$APPGRP "." "/home/$APPUSR/$PRODUCT_DIR"
+
+WORKDIR $PRODUCT_DIR
+
+RUN /home/$APPUSR/$PRODUCT_DIR/src/bash/run/run.sh -a do_check_install_terraform
+RUN /home/$APPUSR/$PRODUCT_DIR/src/bash/run/run.sh -a do_ubuntu_check_install_awscli
+
+CMD exec /bin/bash -c "/home/$APPUSR/$PRODUCT_DIR/src/bash/run/docker-init-devops.sh"

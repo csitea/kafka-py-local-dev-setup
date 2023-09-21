@@ -1,0 +1,8 @@
+FROM python:3.10.11-slim-buster
+
+
+# isntall python pip
+RUN wget https://bootstrap.pypa.io/get-pip.py ; sudo python3 get-pip.py ; sudo rm -v get-pip.py
+
+RUN pip3 install --upgrade pip
+RUN pip3 install wheel

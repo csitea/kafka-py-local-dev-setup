@@ -1,0 +1,15 @@
+ [INFO  ] 2023-08-25 11:42:21 EEST [infra-core][@vasil-modern14] [4469] START ::: running action :: do_pull_all_repos_in_org 
+ [INFO  ] 2023-08-25 11:42:56 EEST [infra-core][@vasil-modern14] [4469] STOP ::: running function :: do_pull_all_repos_in_org 
+ [OK    ] 2023-08-25 11:42:56 EEST [infra-core][@vasil-modern14] [4469] run's run completed 
+ [INFO  ] 2023-08-25 12:48:21 EEST [infra-core][@vasil-modern14] [8423] START ::: running action :: do_route53_state_backup 
+ [FATAL ] 2023-08-25 12:49:20 EEST [infra-core][@vasil-modern14] [8423] failed to run action: do_route53_state_backup !!! 
+ [INFO  ] 2023-08-25 14:28:01 EEST [infra-core][@vasil-modern14] [15275] START ::: running action :: do_route53_state_backup 
+ [FATAL ] 2023-08-25 14:28:59 EEST [infra-core][@vasil-modern14] [15275] failed to run action: do_route53_state_backup !!! 
+ [INFO  ] 2023-08-25 15:23:13 EEST [infra-core][@vasil-modern14] [19640] START ::: running action :: do_aws_add_new_infra_admin_user 
+ [INFO  ] 2023-08-25 15:23:30 EEST [infra-core][@vasil-modern14] [19640] STOP ::: running function :: do_aws_add_new_infra_admin_user 
+ [OK    ] 2023-08-25 15:23:30 EEST [infra-core][@vasil-modern14] [19640] run's run completed 
+ [INFO  ] 2023-08-25 15:46:27 EEST [infra-core][@vasil-modern14] [24521] START ::: running action :: do_pull_all_repos_in_org 
+ [FATAL ] 2023-08-25 15:46:30 EEST [infra-core][@vasil-modern14] [24521] failed to pull rebase infra-core 
+ [INFO  ] 2023-08-25 15:47:06 EEST [infra-core][@vasil-modern14] [26334] START ::: running action :: do_pull_all_repos_in_org 
+ [INFO  ] 2023-08-25 15:48:12 EEST [infra-core][@vasil-modern14] [26334] STOP ::: running function :: do_pull_all_repos_in_org 
+ [OK    ] 2023-08-25 15:48:12 EEST [infra-core][@vasil-modern14] [26334] run's run completed 

@@ -1,0 +1,17 @@
+ [INFO  ] 2023-08-24 11:28:52 EEST [infra-core][@vasil-modern14] [14746] START ::: running action :: do_pull_all_repos_in_org 
+ [FATAL ] 2023-08-24 11:28:54 EEST [infra-core][@vasil-modern14] [14746] failed to pull rebase infra-conf-generator 
+ [INFO  ] 2023-08-24 11:29:32 EEST [infra-core][@vasil-modern14] [16567] START ::: running action :: do_pull_all_repos_in_org 
+ [FATAL ] 2023-08-24 11:29:34 EEST [infra-core][@vasil-modern14] [16567] failed to pull rebase infra-conf-generator 
+ [INFO  ] 2023-08-24 11:30:38 EEST [infra-core][@vasil-modern14] [18427] START ::: running action :: do_pull_all_repos_in_org 
+ [FATAL ] 2023-08-24 11:30:41 EEST [infra-core][@vasil-modern14] [18427] failed to pull rebase infra-conf-generator 
+ [INFO  ] 2023-08-24 11:31:36 EEST [infra-core][@vasil-modern14] [20258] START ::: running action :: do_pull_all_repos_in_org 
+ [FATAL ] 2023-08-24 11:31:55 EEST [infra-core][@vasil-modern14] [20258] failed to pull rebase tqa-crt-infra-conf 
+ [INFO  ] 2023-08-24 11:34:46 EEST [infra-core][@vasil-modern14] [24550] START ::: running action :: do_route53_state_backup 
+ [FATAL ] 2023-08-24 11:34:51 EEST [infra-core][@vasil-modern14] [24550] failed to run action: do_route53_state_backup !!! 
+ [INFO  ] 2023-08-24 16:42:34 EEST [infra-core][@vasil-modern14] [34315] START ::: running action :: do_pull_all_repos_in_org 
+ [FATAL ] 2023-08-24 16:42:53 EEST [infra-core][@vasil-modern14] [34315] failed to pull rebase tqa-crt-infra-conf 
+ [INFO  ] 2023-08-24 16:43:38 EEST [infra-core][@vasil-modern14] [36661] START ::: running action :: do_pull_all_repos_in_org 
+ [FATAL ] 2023-08-24 16:44:06 EEST [infra-core][@vasil-modern14] [36661] failed to pull rebase tqa-wwh-infra-app 
+ [INFO  ] 2023-08-24 16:45:07 EEST [infra-core][@vasil-modern14] [38728] START ::: running action :: do_pull_all_repos_in_org 
+ [INFO  ] 2023-08-24 16:45:43 EEST [infra-core][@vasil-modern14] [38728] STOP ::: running function :: do_pull_all_repos_in_org 
+ [OK    ] 2023-08-24 16:45:43 EEST [infra-core][@vasil-modern14] [38728] run's run completed 

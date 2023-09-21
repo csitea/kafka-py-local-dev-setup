@@ -1,0 +1,118 @@
+FROM debian:stable-slim
+
+# TODO: parametrize
+EXPOSE 9092
+
+ARG UID
+ARG GID
+ARG BASE_DIR
+ARG PRODUCT
+ARG ORG_DIR
+ARG PRODUCT_DIR
+ARG APPUSR
+ARG APPGRP
+ARG HOME_PRODUCT_DIR
+ARG MOUNT_WORK_DIR
+ARG DOCKER_SHELL
+ARG DOCKER_HOME
+ARG RUN_SCRIPT
+ARG DOCKER_INIT_SCRIPT
+ARG TF_VERSION
+ARG TERRAFORM_VERSION
+# ARG MODULE
+
+ENV BASE_DIR=$BASE_DIR
+ENV ORG=$ORG
+ENV PRODUCT=$PRODUCT
+ENV ORG_DIR=$ORG_DIR
+ENV PRODUCT_DIR=$PRODUCT_DIR
+ENV EDITOR="vim"
+ENV APPUSR=$APPUSR
+ENV APPGRP=$APPGRP
+ENV PS1='`date "+%F %T"` \u@\h  \w \n\n  '
+ENV HOME_PRODUCT_DIR=$HOME_PRODUCT_DIR
+ENV MOUNT_WORK_DIR=$MOUNT_WORK_DIR
+ENV DOCKER_SHELL=$DOCKER_SHELL
+ENV DOCKER_HOME=$DOCKER_HOME
+ENV RUN_SCRIPT=$RUN_SCRIPT
+ENV DOCKER_INIT_SCRIPT=$DOCKER_INIT_SCRIPT
+ENV MODULE="kafka-server"
+ENV TF_VERSION=$TF_VERSION
+ENV TERRAFORM_VERSION=$TERRAFORM_VERSION
+
+ENV KAFKA_VERSION=3.5.0
+ENV KAFKA_SCALA_VERSION=2.13
+ENV KAFKA_HOME="/opt/kafka"
+
+VOLUME $MOUNT_WORK_DIR
+
+# Install required dependencies
+RUN apt-get update && apt-get install -y \
+    default-jre \
+    wget sudo\
+    && rm -rf /var/lib/apt/lists/*
+
+
+# ENV KAFKA_DIR="$KAFKA_HOME/kafka_$KAFKA_SCALA_VERSION-$KAFKA_VERSION"
+# ENV DOWNLOAD= https://dlcdn.apache.org/kafka/3.5.0/kafka_2.13-3.5.0.tgz
+
+# Download and extract Kafka
+RUN wget -q "https://dlcdn.apache.org/kafka/${KAFKA_VERSION}/kafka_${KAFKA_SCALA_VERSION}-${KAFKA_VERSION}.tgz" -O /tmp/kafka.tgz \
+    && mkdir -p ${KAFKA_HOME} \
+    && tar -xzf /tmp/kafka.tgz --strip-components=1 -C ${KAFKA_HOME} \
+    && rm /tmp/kafka.tgz 
+
+
+RUN test -z $(getent group $GID | cut -d: -f1) || \
+        groupmod -g $((GID+1000)) $(getent group $GID | cut -d: -f1)
+
+# START ::: add-os-user
+RUN if getent group $GID; then groupmod -g $((GID+2000)) $(getent group $GID | cut -d: -f1); fi
+
+# create a APPGRP and APPUSR
+# START ::: add-os-user
+RUN set -x ; groupadd -g "$GID" "$APPGRP" && \
+  useradd \
+  --gid "$GID" \
+  --non-unique \
+  --shell "$DOCKER_SHELL" \
+  --home-dir "/home/appusr" \
+  --uid "$UID" \
+  --groups "$APPGRP" "$APPUSR" && exit 0 ; exit 1
+
+# create home directory and change its ownership to APPUSR:APPGRP
+RUN mkdir -p "/home/$APPUSR" && chown "$APPUSR":"$APPGRP" "/home/$APPUSR"
+
+
+RUN echo "$APPUSR ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+RUN echo "export PS1=\"$PS1\"" >> $DOCKER_HOME/.bashrc
+RUN echo $DOCKER_HOME
+RUN chown -R $APPUSR:$APPGRP $DOCKER_HOME 
+RUN chmod -R 0775 $DOCKER_HOME
+
+
+# USER $APPUSR
+
+COPY --chown=$APPUSR:$APPGRP . ${HOME_PRODUCT_DIR}
+COPY --chown=$APPUSR:$APPGRP ./src/bash/run/run.sh ${HOME_PRODUCT_DIR}/src/bash/run/run.sh
+
+# Create the 'run' symlink
+WORKDIR $HOME_PRODUCT_DIR
+RUN ln -sfn src/bash/run/run.sh run
+
+
+# STOP  ::: copy-proj-dir
+
+
+
+# Workdir is /opt/$org/$product/
+WORKDIR $PRODUCT_DIR
+
+# COPY ./run_both_zookeeper_kafka.sh /opt/kafka/
+
+# RUN sudo chmod 0775 /opt/kafka/run_both_zookeeper_kafka.shRUN
+RUN sudo chmod 0775 "${HOME_PRODUCT_DIR}/src/bash/scripts/docker-init-${MODULE}.sh"
+
+# Start Kafka server when the container starts
+# CMD ["/opt/kafka/bin/zookeeper-server-start.sh /opt/kafka/config/zookeeper.properties", "/opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties"]
+CMD exec /bin/bash -c "${HOME_PRODUCT_DIR}/src/bash/scripts/docker-init-${MODULE}.sh"

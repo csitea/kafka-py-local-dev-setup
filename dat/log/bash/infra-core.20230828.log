@@ -1,0 +1,11 @@
+ [INFO  ] 2023-08-28 10:19:53 EEST [infra-core][@vasil-modern14] [6350] START ::: running action :: do_print_usage 
+ [INFO  ] 2023-08-28 10:20:20 EEST [infra-core][@vasil-modern14] [8121] START ::: running action :: do_pull_all_repos_in_org 
+ [INFO  ] 2023-08-28 10:20:55 EEST [infra-core][@vasil-modern14] [8121] STOP ::: running function :: do_pull_all_repos_in_org 
+ [OK    ] 2023-08-28 10:20:55 EEST [infra-core][@vasil-modern14] [8121] run's run completed 
+ [INFO  ] 2023-08-28 14:50:50 EEST [infra-core][@vasil-modern14] [46779] START ::: running action :: do_print_usage 
+ [FATAL ] 2023-08-28 18:39:17 EEST [infra-core][@vasil-modern14] [106716] action(s) requested: "do_generate_wg_conf " NOT found !!! 
+ [FATAL ] 2023-08-28 18:39:17 EEST [infra-core][@vasil-modern14] [106716] 1. check the spelling of your action 
+ [FATAL ] 2023-08-28 18:39:17 EEST [infra-core][@vasil-modern14] [106716] 2. check the available actions by: ENV=lde ./run --help 
+ [FATAL ] 2023-08-28 18:39:17 EEST [infra-core][@vasil-modern14] [106716] the run failed ! 
+ [INFO  ] 2023-08-28 18:39:59 EEST [infra-core][@vasil-modern14] [108551] START ::: running action :: do_print_usage 
+ [INFO  ] 2023-08-28 18:40:05 EEST [infra-core][@vasil-modern14] [110328] START ::: running action :: do_print_usage 
