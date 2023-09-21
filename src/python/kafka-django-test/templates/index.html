@@ -13,7 +13,7 @@
 </form>
 <div>
     {% for message in consumer %}
-    <p>{{ message.topic }} --- {{ message.value }}</p>
+    <p>Topic: {{ message.topic }} --- Message: {{ message.value }}</p>
     {% endfor %}
 </div>
 
