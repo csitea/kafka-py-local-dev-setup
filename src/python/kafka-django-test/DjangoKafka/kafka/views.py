@@ -4,14 +4,14 @@ from django.shortcuts import render
 from kafka import KafkaConsumer, KafkaProducer
 
 from DjangoKafka.kafka.forms import TheForm
-from DjangoKafka.kafka.helper_func import helper_func
+from DjangoKafka.kafka.helper_function import is_first_load
 
-helper = helper_func()
-# Create your views here.
+is_first_load_of_page = is_first_load()
+
 def index(request):
     form = TheForm()
     # Create a Kafka producer instance
-    if helper():
+    if is_first_load_of_page():
         producer = KafkaProducer(
             bootstrap_servers='127.0.0.1:9092',
             value_serializer=lambda m: json.dumps(m).encode('utf-8')
@@ -44,6 +44,7 @@ def index(request):
                 consumer_timeout_ms=1000,
                 value_deserializer=lambda m: json.loads(m.decode('utf-8'))
             )
+            # subscribe the customer to the current topic
             consumer.subscribe([the_topic])
             new_form = TheForm()
             context = {
@@ -59,6 +60,7 @@ def index(request):
         consumer_timeout_ms=1000,
         value_deserializer=lambda m: json.loads(m.decode('utf-8'))
     )
+    # subscribe the customer to the current topic
     consumer.subscribe(['new'])
     context ={
         "form": form,

@@ -53,8 +53,6 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 
-# ENV KAFKA_DIR="$KAFKA_HOME/kafka_$KAFKA_SCALA_VERSION-$KAFKA_VERSION"
-# ENV DOWNLOAD= https://dlcdn.apache.org/kafka/3.5.0/kafka_2.13-3.5.0.tgz
 
 # Download and extract Kafka
 RUN wget -q "https://dlcdn.apache.org/kafka/${KAFKA_VERSION}/kafka_${KAFKA_SCALA_VERSION}-${KAFKA_VERSION}.tgz" -O /tmp/kafka.tgz \
@@ -91,7 +89,7 @@ RUN chown -R $APPUSR:$APPGRP $DOCKER_HOME
 RUN chmod -R 0775 $DOCKER_HOME
 
 
-# USER $APPUSR
+# START  ::: copy-proj-dir
 
 COPY --chown=$APPUSR:$APPGRP . ${HOME_PRODUCT_DIR}
 COPY --chown=$APPUSR:$APPGRP ./src/bash/run/run.sh ${HOME_PRODUCT_DIR}/src/bash/run/run.sh
@@ -108,11 +106,9 @@ RUN ln -sfn src/bash/run/run.sh run
 # Workdir is /opt/$org/$product/
 WORKDIR $PRODUCT_DIR
 
-# COPY ./run_both_zookeeper_kafka.sh /opt/kafka/
 
-# RUN sudo chmod 0775 /opt/kafka/run_both_zookeeper_kafka.shRUN
 RUN sudo chmod 0775 "${HOME_PRODUCT_DIR}/src/bash/scripts/docker-init-${MODULE}.sh"
 
 # Start Kafka server when the container starts
-# CMD ["/opt/kafka/bin/zookeeper-server-start.sh /opt/kafka/config/zookeeper.properties", "/opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties"]
+
 CMD exec /bin/bash -c "${HOME_PRODUCT_DIR}/src/bash/scripts/docker-init-${MODULE}.sh"

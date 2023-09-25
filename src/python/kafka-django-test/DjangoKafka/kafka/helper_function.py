@@ -1,4 +1,4 @@
-def helper_func():
+def is_first_load():
     FIRST_LOAD = 0
     def inner():
         nonlocal FIRST_LOAD

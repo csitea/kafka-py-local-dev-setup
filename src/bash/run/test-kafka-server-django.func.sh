@@ -10,6 +10,8 @@ do_test_kafka_server_django(){
 
     pip install -r requirements.txt
 
+    echo "Starting Django server at http://127.0.0.1:8000"
+
     python manage.py runserver
 
 
